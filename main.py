@@ -44,3 +44,7 @@ class TweetAdmin(ModelView, model=Tweet):
 
 admin.add_view(UserAdmin)
 admin.add_view(TweetAdmin)
+
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
