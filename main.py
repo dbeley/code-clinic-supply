@@ -1,3 +1,5 @@
+from urllib.request import Request
+
 from fastapi import FastAPI
 from sqladmin import Admin, ModelView
 
@@ -6,6 +8,9 @@ import os
 from sqlalchemy import Column, Integer, String, create_engine, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from starlette.responses import HTMLResponse
+from starlette.staticfiles import StaticFiles
+from starlette.templating import Jinja2Templates
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 DATABASE_URL2 = DATABASE_URL.replace("postgres", "postgresql")
@@ -53,10 +58,10 @@ async def root():
 Session = sessionmaker(bind=engine)
 session = Session()
 
-# @app.get("/tweets/")
-# async def read_items() -> list[Tweet]:
-#     tweets = session.query(Tweet).all()
-#     return [tweet.content for tweet in tweets]
+@app.get("/tweets/")
+async def read_items() -> list[Tweet]:
+    tweets = session.query(Tweet).all()
+    return [tweet.__dict__ for tweet in tweets]
 
 # @app.get(
 #     "/tweets/{item_id}/content",
@@ -66,3 +71,11 @@ session = Session()
 # async def read_tweet_name(tweet_id: str):
 #     tweets = session.query(Tweet).all()
 #     return tweets[tweet_id]
+app.mount("/static", StaticFiles(directory="static"), name="static")
+templates = Jinja2Templates(directory="templates")
+
+
+@app.get("/tweets/{id}", response_class=HTMLResponse)
+async def read_tweet(request: Request, id: str):
+    tweets = session.query(Tweet).all()
+    return templates.TemplateResponse("tweet.html", {"content": tweets[id].content, "id": id})
