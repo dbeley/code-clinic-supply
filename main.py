@@ -58,11 +58,11 @@ session = Session()
 #     tweets = session.query(Tweet).all()
 #     return [tweet.content for tweet in tweets]
 
-@app.get(
-    "/tweets/{item_id}/content",
-    response_model=Tweet,
-    response_model_include=["content"],
-)
-async def read_tweet_name(tweet_id: str):
-    tweets = session.query(Tweet).all()
-    return tweets[tweet_id]
+# @app.get(
+#     "/tweets/{item_id}/content",
+#     response_model=Tweet,
+#     response_model_include=["content"],
+# )
+# async def read_tweet_name(tweet_id: str):
+#     tweets = session.query(Tweet).all()
+#     return tweets[tweet_id]
