@@ -5,6 +5,7 @@ import os
 
 from sqlalchemy import Column, Integer, String, create_engine, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import sessionmaker
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
 DATABASE_URL2 = DATABASE_URL.replace("postgres", "postgresql")
@@ -47,4 +48,21 @@ admin.add_view(TweetAdmin)
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello World"}\
+
+Session = sessionmaker(bind=engine)
+session = Session()
+
+@app.get("/tweets/")
+async def read_items() -> list[Tweet]:
+    tweets = session.query(Tweet).all()
+    return tweets
+
+@app.get(
+    "/tweets/{item_id}/content",
+    response_model=Tweet,
+    response_model_include=["content"],
+)
+async def read_tweet_name(tweet_id: str):
+    tweets = session.query(Tweet).all()
+    return tweets[tweet_id]
