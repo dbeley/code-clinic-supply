@@ -1,10 +1,13 @@
+import os
+
 from sqlalchemy import Column, Integer, String, create_engine, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
+DATABASE_URL = os.environ.get("DATABASE_URL")
 
 Base = declarative_base()
 engine = create_engine(
-    "sqlite:///example.db",
+    DATABASE_URL,
     connect_args={"check_same_thread": False},
 )
 
