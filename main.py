@@ -1,3 +1,6 @@
+from fastapi import FastAPI
+from sqladmin import Admin, ModelView
+
 import os
 
 from sqlalchemy import Column, Integer, String, create_engine, ForeignKey
@@ -26,3 +29,18 @@ class Tweet(Base):
     user_id = Column(ForeignKey("user.id"))
 
 Base.metadata.create_all(engine)  # Create tables
+
+
+app = FastAPI()
+admin = Admin(app, engine)
+
+
+class UserAdmin(ModelView, model=User):
+    column_list = [User.id, User.name]
+
+class TweetAdmin(ModelView, model=Tweet):
+    column_list = [Tweet.id, Tweet.content]
+
+
+admin.add_view(UserAdmin)
+admin.add_view(TweetAdmin)
