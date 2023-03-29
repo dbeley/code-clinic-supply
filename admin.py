@@ -13,7 +13,8 @@ class UserAdmin(ModelView, model=User):
     column_list = [User.id, User.name]
 
 class TweetAdmin(ModelView, model=Tweet):
-    column_list = [User.id, User.name]
+    column_list = [Tweet.id, Tweet.content]
+
 
 admin.add_view(UserAdmin)
 admin.add_view(TweetAdmin)
