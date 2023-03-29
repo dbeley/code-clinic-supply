@@ -75,7 +75,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
 
-@app.get("/tweets/{id}", response_class=HTMLResponse)
-async def read_tweet(request: Request, id: str):
-    tweets = session.query(Tweet).all()
-    return templates.TemplateResponse("tweet.html", {"content": tweets[id].content, "id": id})
+# @app.get("/tweets/{id}", response_class=HTMLResponse)
+# async def read_tweet(request: Request, id: str):
+#     tweets = session.query(Tweet).all()
+#     return templates.TemplateResponse("tweet.html", {"content": tweets[id].content, "id": id})
