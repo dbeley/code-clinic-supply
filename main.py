@@ -4,10 +4,11 @@ from sqlalchemy import Column, Integer, String, create_engine, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 
 DATABASE_URL = os.environ.get("DATABASE_URL")
+DATABASE_URL2 = DATABASE_URL.replace("postgres", "postgresql")
 
 Base = declarative_base()
 engine = create_engine(
-    DATABASE_URL,
+    DATABASE_URL2,
     connect_args={"check_same_thread": False},
 )
 
