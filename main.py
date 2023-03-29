@@ -58,10 +58,10 @@ async def root():
 Session = sessionmaker(bind=engine)
 session = Session()
 
-@app.get("/tweets/")
-async def read_items() -> list[Tweet]:
-    tweets = session.query(Tweet).all()
-    return [tweet.__dict__ for tweet in tweets]
+# @app.get("/tweets/")
+# async def read_items() -> list[Tweet]:
+#     tweets = session.query(Tweet).all()
+#     return [tweet.__dict__ for tweet in tweets]
 
 # @app.get(
 #     "/tweets/{item_id}/content",
